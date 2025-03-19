@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLanyard } from '../hooks/useLanyard';
 import Image from 'next/image';
 
