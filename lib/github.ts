@@ -15,6 +15,33 @@ export type GitHubRepo = {
   updated_at: string;
 }
 
+interface GithubGraphQLRepo {
+  id: string;
+  name: string;
+  description: string | null;
+  url: string;
+  homepageUrl: string | null;
+  primaryLanguage: {
+    name: string;
+    color: string;
+  } | null;
+  languages: {
+    nodes: Array<{
+      name: string;
+      color: string;
+    }>;
+  };
+  stargazerCount: number;
+  forkCount: number;
+  repositoryTopics: {
+    nodes: Array<{
+      topic: {
+        name: string;
+      };
+    }>;
+  };
+}
+
 export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
   try {
     const response = await fetch('https://api.github.com/graphql', {
@@ -66,7 +93,7 @@ export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
       return await getFallbackRepos(username);
     }
     
-    const pinnedRepos = data.data.user.pinnedItems.nodes.map((repo: any) => ({
+    const pinnedRepos = data.data.user.pinnedItems.nodes.map((repo: GithubGraphQLRepo) => ({
       id: repo.id,
       name: repo.name,
       full_name: `${username}/${repo.name}`,
@@ -76,7 +103,7 @@ export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
       language: repo.primaryLanguage?.name,
       languageColor: repo.primaryLanguage?.color,
       stargazers_count: repo.stargazerCount,
-      topics: repo.repositoryTopics.nodes.map((topic: any) => topic.topic.name),
+      topics: repo.repositoryTopics.nodes.map((topic: { topic: { name: string } }) => topic.topic.name),
       created_at: "",
       updated_at: ""
     }));
@@ -104,7 +131,7 @@ async function getFallbackRepos(username: string): Promise<GitHubRepo[]> {
       "Go": "#00ADD8"
     };
     
-    return repos.map((repo: any) => ({
+    return repos.map((repo: Partial<GitHubRepo>) => ({
       ...repo,
       languageColor: repo.language ? languageColors[repo.language] || "#6e6e6e" : null
     }));

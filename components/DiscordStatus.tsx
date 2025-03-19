@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useLanyard } from '../hooks/useLanyard';
+import Image from 'next/image';
 
 export default function DiscordStatus() {
   const { data, loading, error } = useLanyard();
@@ -34,11 +35,13 @@ export default function DiscordStatus() {
         </svg>
 
         <div className="relative h-6 w-6 flex-shrink-0">
-          <img 
-            src={data.spotify.album_art_url} 
-            alt={data.spotify.album || "Album cover"} 
-            className="h-6 w-6 rounded-full object-cover"
-          />
+        <Image 
+          src={data.spotify.album_art_url} 
+          alt={data.spotify.album || "Album cover"}
+          width={24}
+          height={24} 
+          className="h-6 w-6 rounded-full object-cover"
+        />
         </div>
         
         <span className="truncate font-medium">

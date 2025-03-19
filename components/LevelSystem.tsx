@@ -46,7 +46,7 @@ export default function LevelSystem() {
     setAge(calculateAge());
     setLevelProgress(calculateLevelProgress());
     setDaysToNext(calculateDaysToNextLevel());
-  }, []);
+  }, [calculateLevelProgress]);
   
   return (
     <div className="card bg-background/50 backdrop-blur-md border border-foreground/10 p-6 hover:border-primary/30">
