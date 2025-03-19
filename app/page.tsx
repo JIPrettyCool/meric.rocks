@@ -3,6 +3,7 @@ import DiscordStatus from '../components/DiscordStatus'
 import LevelSystem from '../components/LevelSystem'
 import { getPinnedRepos } from '../lib/github'
 
+export const revalidate = 900;
 export default async function Home() {
   const repos = await getPinnedRepos('jiprettycool');
 
