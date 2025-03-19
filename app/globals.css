@@ -7,7 +7,7 @@
 
 :root {
   --foreground: #ffffff;
-  --background: #0a0a0a;
+  --background: #171717;
   --primary: #f5f5f5;
   --secondary: #171717;
   --accent: #525252;
@@ -26,6 +26,16 @@ body {
   
   .btn {
     @apply px-6 py-3 rounded-full bg-foreground text-background font-semibold transition-all hover:bg-primary hover:text-secondary hover:scale-105;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 rounded-full font-semibold bg-transparent border text-foreground transition-all hover:border-primary hover:text-primary hover:scale-105;
+  }
+  
+  .btn-outline:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background-color: transparent;
   }
   
   .section {
@@ -70,4 +80,42 @@ body {
   0% { opacity: 0.3; }
   50% { opacity: 0.6; }
   100% { opacity: 0.3; }
+}
+
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.rainbow-border {
+  position: relative;
+  z-index: 0;
+}
+
+.rainbow-border::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    rgba(255, 0, 0, 0.3), 
+    rgba(255, 165, 0, 0.3), 
+    rgba(255, 255, 0, 0.3), 
+    rgba(0, 128, 0, 0.3), 
+    rgba(0, 0, 255, 0.3), 
+    rgba(75, 0, 130, 0.3), 
+    rgba(238, 130, 238, 0.3));
+  border-radius: inherit;
+  background-size: 300% 300%;
+  animation: gradient-border 15s ease infinite;
 }

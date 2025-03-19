@@ -49,7 +49,7 @@ export default function LevelSystem() {
   }, [calculateLevelProgress]);
   
   return (
-    <div className="card bg-background/50 backdrop-blur-md border border-foreground/10 p-6 hover:border-primary/30">
+    <div className="card bg-background/50 border border-foreground/10 p-6 hover:border-primary/30">
       <div className="flex items-center justify-between mb-4 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
           <div className="h-14 w-14 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
@@ -71,9 +71,9 @@ export default function LevelSystem() {
       </div>
       
       <div className="flex flex-wrap gap-2 mb-6">
-        <span className="px-3 py-1 bg-background/30 backdrop-blur-sm rounded-full text-xs font-mono border border-foreground/10">Istanbul, Turkey</span>
-        <span className="px-3 py-1 bg-background/30 backdrop-blur-sm rounded-full text-xs font-mono border border-foreground/10">Student</span>
-        <span className="px-3 py-1 bg-background/30 backdrop-blur-sm rounded-full text-xs font-mono border border-foreground/10">Selfhost</span>
+        <span className="px-3 py-1 bg-background/30 rounded-full text-xs font-mono border border-foreground/10">Istanbul, Turkey</span>
+        <span className="px-3 py-1 bg-background/30 rounded-full text-xs font-mono border border-foreground/10">Student</span>
+        <span className="px-3 py-1 bg-background/30 rounded-full text-xs font-mono border border-foreground/10">Selfhost</span>
       </div>
       
       <div className="mb-6">
@@ -117,6 +117,15 @@ export default function LevelSystem() {
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
               <span className="text-sm">HP Victus 16 7840HS</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+              <span className="text-sm">Beelink MINI S12 Pro</span>
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
