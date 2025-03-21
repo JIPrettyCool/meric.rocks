@@ -74,12 +74,12 @@ export default async function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             {repos.map((repo, index) => {
               const emoji = getEmojiFromDescription(repo.description);
-              const isLunaTransfer = repo.name === "LunaTransfer";
+              const isFeaturedRepo = repo.name === "LunaTransfer";
               
               return (
                 <div 
                   key={repo.id} 
-                  className={`card border ${isLunaTransfer ? 'rainbow-border p-5' : 'border-foreground/5 hover:border-foreground/10 p-6'} group bg-secondary/30 flex flex-col h-full`}
+                  className={`card border ${isFeaturedRepo ? 'rainbow-border p-5' : 'border-foreground/5 hover:border-foreground/10 p-6'} group bg-secondary/30 flex flex-col h-full`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="flex items-center gap-4 mb-4">
@@ -95,13 +95,13 @@ export default async function Home() {
                     
                     <div>
                       <h3 className="text-xl font-bold">{repo.name}</h3>
-                      {isLunaTransfer && (
+                      {isFeaturedRepo && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary mt-1">
-                          <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg className="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" 
                               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
-                          Constantly Updating
+                          Active Development
                         </span>
                       )}
                     </div>
@@ -129,8 +129,6 @@ export default async function Home() {
                       ))}
                     </div>
                   </div>
-                  
-                  {/* Bottom links - always at the bottom with mt-auto */}
                   <div className="flex gap-4 mt-auto pt-2">
                     {repo.homepage && (
                       <a href={repo.homepage} target="_blank" rel="noopener noreferrer" className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors group/link">
