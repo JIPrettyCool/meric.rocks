@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-foreground/5 bg-background/70 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" className="font-bold text-xl">merickmrc.com</a>
+            <a href="#" className="font-bold text-xl">meric.rocks</a>
             <nav>
               <ul className="flex gap-x-8">
                 <li>
