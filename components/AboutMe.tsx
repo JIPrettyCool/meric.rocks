@@ -18,34 +18,9 @@ export default function AboutMeSection() {
     return age;
   };
   
-  const calculateTimeUntilBirthday = () => {
-    const today = new Date();
-    const birthMonth = 0;
-    const birthDay = 1;
-    
-    let nextBirthday = new Date(today.getFullYear(), birthMonth, birthDay);
-    if (today > nextBirthday) {
-      nextBirthday = new Date(today.getFullYear() + 1, birthMonth, birthDay);
-    }
-    
-    const differenceMs = nextBirthday.getTime() - today.getTime();
-    return Math.ceil(differenceMs / (1000 * 3600 * 24));
-  };
-  
-  const calculateYearProgress = () => {
-    const daysInYear = 365;
-    const daysToNext = calculateTimeUntilBirthday();
-    return 100 - ((daysToNext / daysInYear) * 100);
-  };
-  
   const [age, setAge] = useState(0);
-  const [yearProgress, setYearProgress] = useState(0);
-  const [daysToNext, setDaysToNext] = useState(0);
-  
   useEffect(() => {
     setAge(calculateAge());
-    setYearProgress(calculateYearProgress());
-    setDaysToNext(calculateTimeUntilBirthday());
   }, []);
   
   return (

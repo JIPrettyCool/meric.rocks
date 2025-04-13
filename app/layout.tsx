@@ -1,5 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import Link from 'next/link';
 import { Inter } from 'next/font/google'
 import DiscordStatusIndicator from '../components/DiscordStatusIndicator'
 
@@ -20,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-foreground/5 bg-background/70 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" className="font-bold text-xl">meric.rocks</a>
+            <Link href="/" className="font-bold text-xl"> meric.rocks</Link>
             <div className="flex items-center gap-6">
               <DiscordStatusIndicator />
               

@@ -89,7 +89,7 @@ class UGSChecker {
     excess?: number;
   } {
     const startTime = this.parseTime(dutyStart);
-    let endTime = this.parseTime(dutyEnd);
+    const endTime = this.parseTime(dutyEnd);
     
     if (!startTime || !endTime) {
       return { 
