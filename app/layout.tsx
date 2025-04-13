@@ -1,11 +1,12 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import DiscordStatusIndicator from '../components/DiscordStatusIndicator'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Meric | Software Developer',
+  title: 'Meriç',
   description: 'Personal website showcasing projects and skills',
 }
 
@@ -20,22 +21,26 @@ export default function RootLayout({
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-foreground/5 bg-background/70 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" className="font-bold text-xl">meric.rocks</a>
-            <nav>
-              <ul className="flex gap-x-8">
-                <li>
-                  <a href="#projects" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
-                    Projects
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#about" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
-                    About
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <div className="flex items-center gap-6">
+              <DiscordStatusIndicator />
+              
+              <nav>
+                <ul className="flex gap-x-8">
+                  <li>
+                    <a href="#projects" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
+                      Projects
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#about" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
+                      About
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </header>
         {children}
