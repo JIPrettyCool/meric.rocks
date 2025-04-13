@@ -142,7 +142,7 @@ export default function DiscordStatus() {
               </p>
             </div>
             <p className="text-sm text-foreground/90 font-medium truncate mt-1">
-              {currentActivity?.name}
+              {currentActivity?.name || "No current activity"}
             </p>
             <p className="text-xs text-foreground/70 truncate">
               {currentActivity?.details || (gamingActivity ? "Playing game" : "")}
