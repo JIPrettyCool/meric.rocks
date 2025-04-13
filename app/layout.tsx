@@ -28,13 +28,13 @@ export default function RootLayout({
               <nav>
                 <ul className="flex gap-x-8">
                   <li>
-                    <a href="#projects" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
+                    <a href="https://meric.rocks/#projects" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
                       Projects
                       <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
                     </a>
                   </li>
                   <li>
-                    <a href="#about" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
+                    <a href="https://meric.rocks/#about" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
                       About
                       <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
                     </a>
