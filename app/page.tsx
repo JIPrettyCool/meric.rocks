@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import DiscordStatus from '../components/DiscordStatus'
-import LevelSystem from '../components/LevelSystem'
+import AboutMe from '../components/AboutMe'
 import { getPinnedRepos } from '../lib/github'
 import SocialLinks from '../components/SocialLinks'
 
@@ -150,7 +150,7 @@ export default async function Home() {
             <h2 className="text-4xl font-bold">About Me</h2>
           </div>
           <div className="max-w-2xl mx-auto animate-slide-up p-6 bg-background/20 rounded-2xl backdrop-blur-md shadow-lg border border-white/0">
-            <LevelSystem />
+            <AboutMe />
           </div>
         </div>
       </section>
