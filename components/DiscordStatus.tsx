@@ -1,115 +1,180 @@
 "use client";
 import React from 'react';
 import { useLanyard } from '../hooks/useLanyard';
-import Image from 'next/image';
 
 export default function DiscordStatus() {
-  const { data, loading, error } = useLanyard();
+  const { data, loading } = useLanyard();
 
-  const statusColor = {
-    online: 'bg-green-500',
-    idle: 'bg-yellow-500',
-    dnd: 'bg-red-500',
-    offline: 'bg-gray-500',
+  const codingActivity = data?.activities?.find(activity => 
+    activity.name.includes("Code")
+  );
+
+  const getCodingElapsedTime = () => {
+    if (!codingActivity?.timestamps?.start) return "Just started";
+    
+    const startTime = codingActivity.timestamps.start;
+    const elapsedMs = Date.now() - startTime;
+    const minutes = Math.floor(elapsedMs / 60000);
+    
+    if (minutes < 60) {
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours}h ${remainingMinutes}m`;
+    }
   };
 
-  if (loading || error || !data) {
+  const getSpotifyTimingInfo = () => {
+    if (!data?.spotify?.timestamps) return { elapsed: "0:00", total: "0:00", progress: 0 };
+    
+    const { start, end } = data.spotify.timestamps;
+    const totalDuration = end - start;
+    const elapsedMs = Date.now() - start;
+    const progress = Math.min(elapsedMs / totalDuration, 1);
+    
+    const formatTime = (ms: number) => {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+    
+    return {
+      elapsed: formatTime(elapsedMs),
+      total: formatTime(totalDuration),
+      progress
+    };
+  };
+
+  if (loading) {
     return (
-      <div className="inline-flex items-center px-3 py-1 text-sm rounded-full border border-foreground/10 bg-secondary/30">
-        <span className="relative flex h-2 w-2 mr-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-        </span>
-        <span>Loading...</span>
+      <div className="flex gap-3 mt-4">
+        <div className="h-[90px] flex-1 bg-secondary/30 rounded-lg animate-pulse"></div>
+        <div className="h-[90px] flex-1 bg-secondary/30 rounded-lg animate-pulse"></div>
       </div>
     );
   }
 
-  const currentStatusColor = statusColor[data.discord_status] || statusColor.offline;
+  const spotifyTiming = getSpotifyTimingInfo();
 
-  if (data.listening_to_spotify && data.spotify) {
-    return (
-      <div className="border border-foreground/10 rounded-full bg-background/50 backdrop-blur-sm p-1 pr-4 flex items-center gap-2 w-fit">
-        <svg className="h-4 w-4 text-green-400 shrink-0 ml-2 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.36.12-.75-.12-.87-.479-.12-.359.12-.75.48-.87 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.329 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-        </svg>
-        <div className="flex items-center gap-2 max-w-full">
-          <Image 
-            src={data.spotify.album_art_url} 
-            alt={data.spotify.album || "Album cover"}
-            width={24}
-            height={24}
-            className="h-6 w-6 rounded-full object-cover"
-          />
-          <div className="overflow-hidden">
-            <p className="text-green-400 font-medium text-sm truncate max-w-[180px] sm:max-w-[220px]">
-              {data.spotify.song}
+  return (
+    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+      <div className="bg-secondary/30 p-3 rounded-lg border border-foreground/5 hover:border-blue-500/30 transition-all flex-1 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-background/30 rounded-md flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100" fill="none">
+              <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+                <path fillRule="evenodd" clipRule="evenodd" d="M70.9119 99.3171C72.4869 99.9307 74.2828 99.8914 75.8725 99.1264L96.4608 89.2197C98.6242 88.1787 100 85.9892 100 83.5872V16.4133C100 14.0113 98.6243 11.8218 96.4609 10.7808L75.8725 0.873756C73.7862 -0.130129 71.3446 0.11576 69.5135 1.44695C69.252 1.63711 69.0028 1.84943 68.769 2.08341L29.3551 38.0415L12.1872 25.0096C10.589 23.7965 8.35363 23.8959 6.86933 25.2461L1.36303 30.2549C-0.452552 31.9064 -0.454633 34.7627 1.35853 36.417L16.2471 50.0001L1.35853 63.5832C-0.454633 65.2374 -0.452552 68.0938 1.36303 69.7453L6.86933 74.7541C8.35363 76.1043 10.589 76.2037 12.1872 74.9905L29.3551 61.9587L68.769 97.9167C69.3925 98.5406 70.1246 99.0104 70.9119 99.3171ZM75.0152 27.2989L45.1091 50.0001L75.0152 72.7012V27.2989Z" fill="white"/>
+              </mask>
+              <g mask="url(#mask0)">
+                <path d="M96.4614 10.7962L75.8569 0.875542C73.4719 -0.272773 70.6217 0.211611 68.75 2.08333L1.29858 63.5832C-0.515693 65.2373 -0.513607 68.0937 1.30308 69.7452L6.81272 74.754C8.29793 76.1042 10.5347 76.2036 12.1338 74.9905L93.3609 13.3699C96.086 11.3026 100 13.2462 100 16.6667V16.4275C100 14.0265 98.6246 11.8378 96.4614 10.7962Z" fill="#0065A9"/>
+                <g filter="url(#filter0_d)">
+                  <path d="M96.4614 89.2038L75.8569 99.1245C73.4719 100.273 70.6217 99.7884 68.75 97.9167L1.29858 36.4168C-0.515693 34.7627 -0.513607 31.9063 1.30308 30.2548L6.81272 25.246C8.29793 23.8958 10.5347 23.7964 12.1338 25.0095L93.3609 86.6301C96.086 88.6974 100 86.7538 100 83.3333V83.5725C100 85.9735 98.6246 88.1622 96.4614 89.2038Z" fill="#007ACC"/>
+                </g>
+                <g filter="url(#filter1_d)">
+                  <path d="M75.8578 99.1263C73.4721 100.274 70.622 99.7885 68.75 97.9166C71.0564 100.223 75 98.5895 75 95.3333V4.66672C75 1.41054 71.0564 -0.223169 68.75 2.08329C70.622 0.211402 73.4721 -0.273666 75.8578 0.873633L96.4587 10.7807C98.6234 11.8217 100 14.0112 100 16.4132V83.5871C100 85.9891 98.6234 88.1786 96.4586 89.2196L75.8578 99.1263Z" fill="#1F9CF0"/>
+                </g>
+                <g style={{ mixBlendMode: 'overlay' }} opacity="0.25">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M70.8511 99.3171C72.4261 99.9306 74.2221 99.8913 75.8117 99.1264L96.4 89.2197C98.5634 88.1787 99.9392 85.9892 99.9392 83.5871V16.4133C99.9392 14.0112 98.5635 11.8217 96.4001 10.7807L75.8117 0.873695C73.7255 -0.13019 71.2838 0.115699 69.4527 1.44688C69.1912 1.63705 68.942 1.84937 68.7082 2.08335L29.2943 38.0414L12.1264 25.0096C10.5283 23.7964 8.29285 23.8959 6.80855 25.246L1.30225 30.2548C-0.513334 31.9064 -0.515415 34.7627 1.29775 36.4169L16.1863 50L1.29775 63.5832C-0.515415 65.2374 -0.513334 68.0937 1.30225 69.7452L6.80855 74.754C8.29285 76.1042 10.5283 76.2036 12.1264 74.9905L29.2943 61.9586L68.7082 97.9167C69.3317 98.5405 70.0638 99.0104 70.8511 99.3171ZM74.9544 27.2989L45.0483 50L74.9544 72.7012V27.2989Z" fill="url(#paint0_linear)"/>
+                </g>
+              </g>
+              <defs>
+                <filter id="filter0_d" x="-8.39411" y="15.8291" width="116.727" height="92.2456" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                  <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+                  <feOffset/>
+                  <feGaussianBlur stdDeviation="4.16667"/>
+                  <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                  <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+                </filter>
+                <filter id="filter1_d" x="60.4167" y="-8.07558" width="47.9167" height="116.151" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                  <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+                  <feOffset/>
+                  <feGaussianBlur stdDeviation="4.16667"/>
+                  <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                  <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+                </filter>
+                <linearGradient id="paint0_linear" x1="49.9392" y1="0.257812" x2="49.9392" y2="99.7423" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="white"/>
+                  <stop offset="1" stopColor="white" stopOpacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div className="flex-grow">
+            <div className="flex items-center">
+              <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${codingActivity ? 'bg-blue-500 animate-pulse' : 'bg-gray-500'}`}></span>
+              <p className="font-medium text-sm">
+                {codingActivity ? "Coding" : "Not Coding"}
+              </p>
+            </div>
+            <p className="text-xs text-foreground/90 font-medium truncate mt-0.5">
+              {codingActivity?.name || "Offline"}
             </p>
-            <p className="text-xs text-foreground/80 truncate max-w-[180px] sm:max-w-[220px]">
-              by {data.spotify.artist}
+            <p className="text-xs text-foreground/70 truncate">
+              {codingActivity?.details || "No active project"}
             </p>
+            {codingActivity && (
+              <p className="text-xs font-mono text-blue-400 mt-1">
+                {getCodingElapsedTime()}
+              </p>
+            )}
           </div>
         </div>
       </div>
-    );
-  }
-
-  const vscodeActivity = data.activities?.find(activity => activity.name === 'Code');
-  if (vscodeActivity) {
-    return (
-      <div className="inline-flex items-center px-3 py-1 text-sm rounded-full border border-foreground/10 bg-secondary/30">
-        <span className="relative flex h-2 w-2 mr-2">
-          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${currentStatusColor} opacity-75`}></span>
-          <span className={`relative inline-flex rounded-full h-2 w-2 ${currentStatusColor}`}></span>
-        </span>
-        <span>
-          Coding <span className="font-medium">{vscodeActivity.details}</span>
-          {vscodeActivity.state && <span className="text-foreground/70"> • {vscodeActivity.state}</span>}
-        </span>
+      
+      <div className="bg-secondary/30 p-3 rounded-lg border border-foreground/5 hover:border-green-500/30 transition-all flex-1 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-background/30 rounded-md overflow-hidden flex-shrink-0">
+            {data?.spotify?.album_art_url ? (
+              <img 
+                src={data.spotify.album_art_url} 
+                alt={data.spotify.album} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-green-500">
+                  <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM16.5917 16.4083C16.3833 16.7 16.0333 16.8 15.7417 16.5917C13.4083 15.1917 10.4583 14.8333 6.89167 15.6833C6.55 15.7667 6.19167 15.55 6.10833 15.2083C6.025 14.8667 6.24167 14.5083 6.58333 14.425C10.4833 13.4917 13.7333 13.9083 16.3333 15.475C16.625 15.6833 16.725 16.0333 16.5917 16.4083ZM17.85 13.3917C17.5833 13.7583 17.1417 13.8833 16.775 13.6167C14.0917 12.0083 9.96667 11.4583 6.775 12.4667C6.36667 12.5833 5.93333 12.35 5.81667 11.9417C5.7 11.5333 5.93333 11.1 6.34167 10.9833C9.96667 9.83333 14.5 10.4333 17.625 12.3167C17.9917 12.5833 18.1167 13.025 17.85 13.3917ZM17.9333 10.2917C14.7333 8.46667 9.38333 8.23333 6.14167 9.38333C5.65 9.53333 5.125 9.25 4.975 8.75833C4.825 8.26667 5.10833 7.74167 5.6 7.59167C9.28333 6.28333 15.1833 6.55833 18.8667 8.69167C19.3167 8.95 19.4833 9.525 19.225 9.96667C18.9667 10.4167 18.3833 10.5833 17.9333 10.2917Z"/>
+                </svg>
+              </div>
+            )}
+          </div>
+          <div className="flex-grow min-w-0">
+            <div className="flex items-center">
+              <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${data?.listening_to_spotify ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`}></span>
+              <p className="font-medium text-sm">
+                {data?.listening_to_spotify ? "Listening" : "Not listening"}
+              </p>
+            </div>
+            <p className="text-xs text-foreground/90 font-medium truncate mt-0.5">
+              {data?.spotify?.song || "Nothing playing"}
+            </p>
+            <p className="text-xs text-foreground/70 truncate">
+              {data?.spotify?.artist ? `by ${data.spotify.artist}` : "Spotify"}
+            </p>
+            
+            {data?.listening_to_spotify && (
+              <div className="mt-1.5">
+                <div className="h-1 w-full bg-background/50 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-green-500" 
+                    style={{ width: `${spotifyTiming.progress * 100}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between text-[10px] text-foreground/60 mt-0.5 font-mono">
+                  <span>{spotifyTiming.elapsed}</span>
+                  <span>{spotifyTiming.total}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    );
-  }
-
-  const gameActivity = data.activities?.find(
-    activity => activity.type === 0 && activity.name !== 'Spotify'
-  );
-  
-  if (gameActivity) {
-    return (
-      <div className="inline-flex items-center px-3 py-1 text-sm rounded-full border border-foreground/10 bg-secondary/30">
-        <span className="relative flex h-2 w-2 mr-2">
-          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${currentStatusColor} opacity-75`}></span>
-          <span className={`relative inline-flex rounded-full h-2 w-2 ${currentStatusColor}`}></span>
-        </span>
-        <span>
-          Playing <span className="font-medium">{gameActivity.name}</span>
-        </span>
-      </div>
-    );
-  }
-
-  let statusText;
-  switch (data.discord_status) {
-    case 'online':
-      statusText = "Online";
-      break;
-    case 'idle':
-      statusText = "Away from keyboard";
-      break;
-    case 'dnd':
-      statusText = "Busy";
-      break;
-    default:
-      statusText = "Offline";
-  }
-
-  return (
-    <div className="inline-flex items-center px-3 py-1 text-sm rounded-full border border-foreground/10 bg-secondary/30">
-      <span className="relative flex h-2 w-2 mr-2">
-        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${currentStatusColor} opacity-75`}></span>
-        <span className={`relative inline-flex rounded-full h-2 w-2 ${currentStatusColor}`}></span>
-      </span>
-      <span>{statusText}</span>
     </div>
   );
 }
