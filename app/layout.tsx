@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-foreground/5 bg-background/70 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <Link href="/" className="font-bold text-xl"> meric.rocks</Link>
+            <Link href="https://meric.rocks/#" className="font-bold text-xl"> meric.rocks</Link>
             <div className="flex items-center gap-6">
               <DiscordStatusIndicator />
               
@@ -38,6 +38,12 @@ export default function RootLayout({
                       About
                       <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
                     </a>
+                  </li>
+                  <li>
+                    <Link href="https://tools.meric.rocks" className="relative text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 group">
+                      Tools
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    </Link>
                   </li>
                 </ul>
               </nav>
