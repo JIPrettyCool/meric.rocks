@@ -202,7 +202,7 @@ export default function UGSCalculatorPage() {
             </Link>
             
             <a 
-              href="https://github.com/merickmrc/ugs-calculator" 
+              href="https://github.com/jiprettycool/ugs-checker" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-flex items-center text-xs px-3 py-1.5 rounded-full bg-background/80 border border-white/10 text-foreground/80 hover:text-foreground hover:border-white/20 transition-all"
