@@ -71,7 +71,7 @@ export default function ToolsPage() {
             More tools coming soon!
           </p>
           <div className="mt-6">
-            <Link href="/" className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground transition-colors">
+            <Link href="https://meric.rocks" className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
               </svg>
