@@ -1,8 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import Link from 'next/link';
 import { Inter } from 'next/font/google'
-import DiscordStatusIndicator from '../components/DiscordStatusIndicator'
 
 const inter = Inter({ subsets: ['latin'] })
 
