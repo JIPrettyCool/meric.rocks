@@ -11,199 +11,121 @@ export default function DiscordStatus() {
     activity.type === 0 && !activity.name.includes("Code")
   );
   const currentActivity = codingActivity || gamingActivity || null;
+  
   const getActivityElapsedTime = () => {
-    if (!currentActivity || !currentActivity.timestamps?.start) return "Just started";
-    const startTime = currentActivity.timestamps.start;
-    const elapsedMs = Date.now() - startTime;
-    const minutes = Math.floor(elapsedMs / 60000);
-    if (minutes < 60) {
-      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
-    } else {
-      const hours = Math.floor(minutes / 60);
-      const remainingMinutes = minutes % 60;
-      return `${hours}h ${remainingMinutes}m`;
-    }
+    if (!currentActivity?.timestamps?.start) return "";
+    const elapsedMin = Math.floor((Date.now() - currentActivity.timestamps.start) / 60000);
+    return elapsedMin < 60 ? `${elapsedMin}m` : `${Math.floor(elapsedMin / 60)}h`;
   };
-
-  const getActivityStatusColor = () => {
-    if (codingActivity) return 'bg-blue-500';
-    if (gamingActivity) return 'bg-purple-500';
-    return 'bg-gray-500';
-  };
-
-  const getActivityType = () => {
-    if (codingActivity) return 'Coding';
-    if (gamingActivity) return 'Playing';
-    return 'Chilling';
-  };
-
-  const getSpotifyTimingInfo = () => {
-    if (!data?.spotify?.timestamps) return { elapsed: "0:00", total: "0:00", progress: 0 };
-    
-    const { start, end } = data.spotify.timestamps;
-    const totalDuration = end - start;
-    const elapsedMs = Date.now() - start;
-    const progress = Math.min(elapsedMs / totalDuration, 1);
-    
-    const formatTime = (ms: number) => {
-      const totalSeconds = Math.floor(ms / 1000);
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    };
-    
-    return {
-      elapsed: formatTime(elapsedMs),
-      total: formatTime(totalDuration),
-      progress
-    };
+  
+  const forLongText = (text: string | undefined, maxLength = 22) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   if (loading) {
     return (
-      <div className="flex gap-3 mt-4">
-        <div className="h-[90px] flex-1 bg-secondary/30 rounded-lg animate-pulse"></div>
-        <div className="h-[90px] flex-1 bg-secondary/30 rounded-lg animate-pulse"></div>
+      <div className="mt-6 flex justify-center">
+        <div className="h-14 w-52 bg-secondary/30 rounded-full animate-pulse"></div>
       </div>
     );
   }
 
-  const spotifyTiming = getSpotifyTimingInfo();
-
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mt-4">
-      <div className={`bg-secondary/40 p-4 rounded-xl border border-white/10 shadow-lg ${
+    <div className="mt-6 flex flex-wrap justify-center gap-4">
+      <div className={`flex items-center gap-3 py-3 pl-3 pr-5 rounded-full border ${
         codingActivity 
-          ? 'hover:border-blue-500/30' 
-          : gamingActivity 
-            ? 'hover:border-purple-500/30' 
-            : 'hover:border-foreground/10'
-      } transition-all flex-1 backdrop-blur-md`}>
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 bg-background/40 rounded-2xl flex items-center justify-center shadow-sm">
-            {codingActivity ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100" fill="none">
-                <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M70.9119 99.3171C72.4869 99.9307 74.2828 99.8914 75.8725 99.1264L96.4608 89.2197C98.6242 88.1787 100 85.9892 100 83.5872V16.4133C100 14.0113 98.6243 11.8218 96.4609 10.7808L75.8725 0.873756C73.7862 -0.130129 71.3446 0.11576 69.5135 1.44695C69.252 1.63711 69.0028 1.84943 68.769 2.08341L29.3551 38.0415L12.1872 25.0096C10.589 23.7965 8.35363 23.8959 6.86933 25.2461L1.36303 30.2549C-0.452552 31.9064 -0.454633 34.7627 1.35853 36.417L16.2471 50.0001L1.35853 63.5832C-0.454633 65.2374 -0.452552 68.0938 1.36303 69.7453L6.86933 74.7541C8.35363 76.1043 10.589 76.2037 12.1872 74.9905L29.3551 61.9587L68.769 97.9167C69.3925 98.5406 70.1246 99.0104 70.9119 99.3171ZM75.0152 27.2989L45.1091 50.0001L75.0152 72.7012V27.2989Z" fill="white"/>
-                </mask>
-                <g mask="url(#mask0)">
-                  <path d="M96.4614 10.7962L75.8569 0.875542C73.4719 -0.272773 70.6217 0.211611 68.75 2.08333L1.29858 63.5832C-0.515693 65.2373 -0.513607 68.0937 1.30308 69.7452L6.81272 74.754C8.29793 76.1042 10.5347 76.2036 12.1338 74.9905L93.3609 13.3699C96.086 11.3026 100 13.2462 100 16.6667V16.4275C100 14.0265 98.6246 11.8378 96.4614 10.7962Z" fill="#0065A9"/>
-                  <g filter="url(#filter0_d)">
-                    <path d="M96.4614 89.2038L75.8569 99.1245C73.4719 100.273 70.6217 99.7884 68.75 97.9167L1.29858 36.4168C-0.515693 34.7627 -0.513607 31.9063 1.30308 30.2548L6.81272 25.246C8.29793 23.8958 10.5347 23.7964 12.1338 25.0095L93.3609 86.6301C96.086 88.6974 100 86.7538 100 83.3333V83.5725C100 85.9735 98.6246 88.1622 96.4614 89.2038Z" fill="#007ACC"/>
-                  </g>
-                  <g filter="url(#filter1_d)">
-                    <path d="M75.8578 99.1263C73.4721 100.274 70.622 99.7885 68.75 97.9166C71.0564 100.223 75 98.5895 75 95.3333V4.66672C75 1.41054 71.0564 -0.223169 68.75 2.08329C70.622 0.211402 73.4721 -0.273666 75.8578 0.873633L96.4587 10.7807C98.6234 11.8217 100 14.0112 100 16.4132V83.5871C100 85.9891 98.6234 88.1786 96.4586 89.2196L75.8578 99.1263Z" fill="#1F9CF0"/>
-                  </g>
-                  <g style={{ mixBlendMode: 'overlay' }} opacity="0.25">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M70.8511 99.3171C72.4261 99.9306 74.2221 99.8913 75.8117 99.1264L96.4 89.2197C98.5634 88.1787 99.9392 85.9892 99.9392 83.5871V16.4133C99.9392 14.0112 98.5635 11.8217 96.4001 10.7807L75.8117 0.873695C73.7255 -0.13019 71.2838 0.115699 69.4527 1.44688C69.1912 1.63705 68.942 1.84937 68.7082 2.08335L29.2943 38.0414L12.1264 25.0096C10.5283 23.7964 8.29285 23.8959 6.80855 25.246L1.30225 30.2548C-0.513334 31.9064 -0.515415 34.7627 1.29775 36.4169L16.1863 50L1.29775 63.5832C-0.515415 65.2374 -0.513334 68.0937 1.30225 69.7452L6.80855 74.754C8.29285 76.1042 10.5283 76.2036 12.1264 74.9905L29.2943 61.9586L68.7082 97.9167C69.3317 98.5405 70.0638 99.0104 70.8511 99.3171ZM74.9544 27.2989L45.0483 50L74.9544 72.7012V27.2989Z" fill="url(#paint0_linear)"/>
-                  </g>
-                </g>
-                <defs>
-                  <filter id="filter0_d" x="-8.39411" y="15.8291" width="116.727" height="92.2456" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-                    <feOffset/>
-                    <feGaussianBlur stdDeviation="4.16667"/>
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-                  </filter>
-                  <filter id="filter1_d" x="60.4167" y="-8.07558" width="47.9167" height="116.151" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-                    <feOffset/>
-                    <feGaussianBlur stdDeviation="4.16667"/>
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-                  </filter>
-                  <linearGradient id="paint0_linear" x1="49.9392" y1="0.257812" x2="49.9392" y2="99.7423" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="white"/>
-                    <stop offset="1" stopColor="white" stopOpacity="0"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            ) : gamingActivity ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-purple-500">
-                <path d="M21,6H3C1.9,6 1,6.9 1,8V16C1,17.1 1.9,18 3,18H21C22.1,18 23,17.1 23,16V8C23,6.9 22.1,6 21,6M21,16H3V8H21V16M6,15H8V13H10V11H8V9H6V11H4V13H6V15M14.5,12A1.5,1.5 0 0,1 16,13.5A1.5,1.5 0 0,1 14.5,15A1.5,1.5 0 0,1 13,13.5A1.5,1.5 0 0,1 14.5,12M18.5,9A1.5,1.5 0 0,1 20,10.5A1.5,1.5 0 0,1 18.5,12A1.5,1.5 0 0,1 17,10.5A1.5,1.5 0 0,1 18.5,9Z" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+          ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
+          : gamingActivity
+            ? 'bg-purple-500/10 border-purple-500/20 text-purple-400' 
+            : 'bg-gray-500/10 border-gray-500/20 text-gray-400'
+      } shadow-sm hover:shadow-md transition-shadow`}>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+          codingActivity 
+            ? 'bg-blue-500/20' 
+            : gamingActivity
+              ? 'bg-purple-500/20' 
+              : 'bg-gray-500/20'
+        }`}>
+          {codingActivity ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          ) : gamingActivity ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 6H17C18.1 6 19 6.9 19 8V16C19 17.1 18.1 18 17 18H7C5.9 18 5 17.1 5 16V8C5 6.9 5.9 6 7 6M7 8V16H17V8H7M10 9H11V11H13V9H14V11H16V12H14V14H13V12H11V14H10V12H8V11H10V9Z" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M12 6v6l4 2"></path>
             </svg>
+          )}
+        </div>
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm font-medium opacity-80">
+              {codingActivity ? 'Coding' : gamingActivity ? 'Gaming' : 'Idle'}
+            </span>
+            {getActivityElapsedTime() && (
+              <span className="text-xs opacity-60">• {getActivityElapsedTime()}</span>
             )}
           </div>
-          <div className="flex-grow">
-            <div className="flex items-center">
-              <span className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${currentActivity ? `${getActivityStatusColor()} animate-pulse` : 'bg-gray-500'} shadow-sm`}></span>
-              <p className="font-medium text-sm tracking-tight">
-                {getActivityType()}
-              </p>
-            </div>
-            <p className="text-sm text-foreground/90 font-medium truncate mt-1">
-              {currentActivity?.name || "No current activity"}
-            </p>
-            <p className="text-xs text-foreground/70 truncate">
-              {currentActivity?.details || (gamingActivity ? "Playing game" : "")}
-            </p>
-            {currentActivity && (
-              <p className="text-xs font-medium mt-1.5" style={{color: codingActivity ? '#60a5fa' : (gamingActivity ? '#a855f7' : '#9ca3af')}}>
-                {getActivityElapsedTime()}
-              </p>
-            )}
-          </div>
+          <p className="text-base font-medium truncate max-w-[160px]">
+            {forLongText(currentActivity?.name, 22)}
+          </p>
         </div>
       </div>
-      
-      <div className="bg-secondary/40 p-4 rounded-xl border border-white/10 shadow-lg hover:border-green-500/30 transition-all flex-1 backdrop-blur-md">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 bg-background/40 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
-            {data?.spotify?.album_art_url ? (
+
+      {data?.spotify?.song ? (
+        <div className="flex items-center gap-3 py-3 pl-3 pr-5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+            {data.spotify?.album_art_url ? (
               <img 
                 src={data.spotify.album_art_url} 
-                alt={data.spotify.album} 
+                alt="Album" 
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-green-500">
-                  <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM16.5917 16.4083C16.3833 16.7 16.0333 16.8 15.7417 16.5917C13.4083 15.1917 10.4583 14.8333 6.89167 15.6833C6.55 15.7667 6.19167 15.55 6.10833 15.2083C6.025 14.8667 6.24167 14.5083 6.58333 14.425C10.4833 13.4917 13.7333 13.9083 16.3333 15.475C16.625 15.6833 16.725 16.0333 16.5917 16.4083ZM17.85 13.3917C17.5833 13.7583 17.1417 13.8833 16.775 13.6167C14.0917 12.0083 9.96667 11.4583 6.775 12.4667C6.36667 12.5833 5.93333 12.35 5.81667 11.9417C5.7 11.5333 5.93333 11.1 6.34167 10.9833C9.96667 9.83333 14.5 10.4333 17.625 12.3167C17.9917 12.5833 18.1167 13.025 17.85 13.3917ZM17.9333 10.2917C14.7333 8.46667 9.38333 8.23333 6.14167 9.38333C5.65 9.53333 5.125 9.25 4.975 8.75833C4.825 8.26667 5.10833 7.74167 5.6 7.59167C9.28333 6.28333 15.1833 6.55833 18.8667 8.69167C19.3167 8.95 19.4833 9.525 19.225 9.96667C18.9667 10.4167 18.3833 10.5833 17.9333 10.2917Z"/>
+              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,3C16.97,3 21,7.03 21,12C21,16.97 16.97,21 12,21C7.03,21 3,16.97 3,12C3,7.03 7.03,3 12,3M16.5,12C16.5,14.49 14.49,16.5 12,16.5C9.51,16.5 7.5,14.49 7.5,12C7.5,9.51 9.51,7.5 12,7.5C14.49,7.5 16.5,9.51 16.5,12M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9Z" />
                 </svg>
               </div>
             )}
           </div>
-          <div className="flex-grow min-w-0">
-            <div className="flex items-center">
-              <span className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${data?.listening_to_spotify ? 'bg-green-500 animate-pulse' : 'bg-gray-500'} shadow-sm`}></span>
-              <p className="font-medium text-sm tracking-tight">
-                {data?.listening_to_spotify ? "Listening" : "Not listening"}
-              </p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm font-medium opacity-80">Spotify</span>
             </div>
-            <p className="text-sm text-foreground/90 font-medium truncate mt-1">
-              {data?.spotify?.song || "Nothing playing"}
+            <p className="text-base font-medium truncate max-w-[160px]">
+              {forLongText(data.spotify.song, 22)}
             </p>
-            <p className="text-xs text-foreground/70 truncate">
-              {data?.spotify?.artist ? `by ${data.spotify.artist}` : "Spotify"}
-            </p>
-            
-            {data?.listening_to_spotify && (
-              <div className="mt-3">
-                <div className="h-1.5 w-full bg-background/50 rounded-full overflow-hidden shadow-inner">
-                  <div 
-                    className="h-full bg-green-500 rounded-full"
-                    style={{ width: `${spotifyTiming.progress * 100}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-[10px] text-foreground/60 mt-1 font-medium">
-                  <span>{spotifyTiming.elapsed}</span>
-                  <span>{spotifyTiming.total}</span>
-                </div>
-              </div>
+            {data.spotify.artist && (
+              <p className="text-xs opacity-70 truncate max-w-[160px] mt-0.5">
+                by {forLongText(data.spotify.artist, 18)}
+              </p>
             )}
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center gap-3 py-3 pl-3 pr-5 rounded-full bg-gray-500/10 border border-gray-500/20 text-gray-400 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-10 h-10 rounded-full bg-gray-500/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M9,9H15V15H9" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm font-medium opacity-80">Spotify</span>
+            </div>
+            <p className="text-base font-medium truncate max-w-[160px]">
+              Not playing
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

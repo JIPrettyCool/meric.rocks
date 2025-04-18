@@ -33,11 +33,11 @@ export default function AboutMeSection() {
           <div>
             <h3 className="font-bold text-xl tracking-tight">Meriç</h3>
             <p className="text-sm text-foreground/70 mt-1">
-              Developer from Istanbul, Turkey
+              Istanbul, Turkey
             </p>
           </div>
         </div>
-        <div className="bg-background/30 px-4 py-2 rounded-xl border border-white/10 shadow-sm">
+        <div className="bg-background text-primary px-4 py-2 rounded-xl border border-white/10 shadow-sm">
           <span className="font-medium">Student</span>
         </div>
       </div>
@@ -51,7 +51,7 @@ export default function AboutMeSection() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 leading-relaxed">
-            Software engineering student with a passion for self-hosting and infrastructure. I enjoy building and maintaining my own services, from web applications to home servers.
+            Software Development student with a passion for self-hosting and infrastructure. I enjoy building and maintaining my own services, from web applications to home servers.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function AboutMeSection() {
             <div className="bg-background/30 rounded-xl p-4 border border-white/10 shadow-sm backdrop-blur-sm">
               <h5 className="font-medium text-sm mb-2 flex items-center">
                 <svg className="w-4 h-4 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-                Frontend Development
+                Frontend
               </h5>
               <div className="flex flex-wrap gap-2">
                 <span className="px-2 py-1 bg-blue-500/10 text-blue-400 rounded-md text-xs">React</span>
@@ -72,7 +72,7 @@ export default function AboutMeSection() {
             <div className="bg-background/30 rounded-xl p-4 border border-white/10 shadow-sm backdrop-blur-sm">
               <h5 className="font-medium text-sm mb-2 flex items-center">
                 <svg className="w-4 h-4 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0l1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"></path></svg>
-                Backend Development
+                Backend
               </h5>
               <div className="flex flex-wrap gap-2">
                 <span className="px-2 py-1 bg-blue-500/10 text-blue-500 rounded-md text-xs">Go</span>

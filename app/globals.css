@@ -94,6 +94,41 @@ body {
   }
 }
 
+.active\:scale-95:active {
+  transform: scale(0.98);
+}
+
+.active\:scale-98:active {
+  transform: scale(0.99);
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+section {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .rainbow-border {
   position: relative;
   z-index: 0;
@@ -103,19 +138,32 @@ body {
   content: '';
   position: absolute;
   z-index: -1;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    rgba(255, 0, 0, 0.3), 
-    rgba(255, 165, 0, 0.3), 
-    rgba(255, 255, 0, 0.3), 
-    rgba(0, 128, 0, 0.3), 
-    rgba(0, 0, 255, 0.3), 
-    rgba(75, 0, 130, 0.3), 
-    rgba(238, 130, 238, 0.3));
+  inset: -2px;
   border-radius: inherit;
-  background-size: 300% 300%;
-  animation: gradient-border 15s ease infinite;
+  background: linear-gradient(
+    45deg,
+    #ff2d55,
+    #ff9f0a,
+    #ffcc00,
+    #34c759,
+    #5ac8fa,
+    #007aff,
+    #5856d6,
+    #af52de
+  );
+  background-size: 200% 200%;
+  animation: rainbow 10s ease infinite;
+  opacity: 0.7;
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
