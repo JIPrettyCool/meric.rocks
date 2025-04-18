@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
         {children}
-        <footer className="bg-background py-12 px-6 border-t border-foreground/5">
+        <footer className="bg-background py-12 px-6 border-t border-primary-dark">
           <div className="max-w-7xl mx-auto text-center">
-            <p className="text-foreground/40 text-sm">© {new Date().getFullYear()} Meriç.</p>
+            <p className="text-primary text-sm">© {new Date().getFullYear()} Meriç.</p>
           </div>
         </footer>
       </body>

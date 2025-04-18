@@ -34,7 +34,7 @@ export default async function Home() {
               Hi, I&apos;m <span className="text-primary">Meriç</span>
             </h1>
             <p className="text-lg sm:text-xl text-foreground/80 max-w-md mx-auto md:mx-0 leading-relaxed">
-              Software Developer student based in Istanbul, Turkey.
+              Software Development student based in Istanbul, Turkey.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-2 items-center justify-center md:justify-start">
               <a href="#projects" 
@@ -66,7 +66,6 @@ export default async function Home() {
                   priority
                 />
               </div>
-              {/* Add status indicator below the profile image */}
               <div className="mt-4 flex justify-center">
                 <DiscordStatusIndicator />
               </div>
@@ -84,7 +83,7 @@ export default async function Home() {
           <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {repos.map((repo, index) => {
               const emoji = getEmojiFromDescription(repo.description);
-              const isFeaturedRepo = repo.name === "LunaTransfer";
+              const isFeaturedRepo = repo.name === " ";
               
               return (
                 <div 
