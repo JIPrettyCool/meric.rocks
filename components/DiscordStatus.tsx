@@ -34,7 +34,7 @@ export default function DiscordStatus() {
   return (
     <div className="mt-6 flex flex-wrap justify-center gap-4">
       {(codingActivity || gamingActivity) && (
-        <div className={`flex items-center gap-3 py-3 pl-3 pr-5 rounded-full border ${
+        <div className={`flex items-center gap-3 py-3 pl-3 pr-5 rounded-2xl border ${
           codingActivity 
             ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
             : 'bg-purple-500/10 border-purple-500/20 text-purple-400'
@@ -103,7 +103,7 @@ export default function DiscordStatus() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-3 py-3 pl-3 pr-5 rounded-full bg-gray-500/10 border border-gray-500/20 text-gray-400 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center gap-3 py-3 pl-3 pr-5 rounded-2xl bg-gray-500/10 border border-gray-500/20 text-gray-400 shadow-sm hover:shadow-md transition-shadow">
           <div className="w-10 h-10 rounded-full bg-gray-500/20 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M9,9H15V15H9" />
