@@ -41,9 +41,9 @@ export default async function Home() {
                 className="w-full sm:w-auto btn px-6 py-3.5 bg-primary text-gray-900 rounded-full font-medium shadow-md hover:shadow-lg hover:bg-primary/90 transition-all active:scale-95">
                 View Projects
               </a>
-              <a href="#about" 
+              <a href="https://blog.meric.rocks" 
                 className="w-full sm:w-auto btn-outline px-6 py-3 rounded-full border-2 border-foreground/20 font-medium hover:bg-foreground/5 transition-all backdrop-blur-sm active:scale-95">
-                About Me
+                Blog
               </a>
             </div>
             <div className="flex justify-center md:justify-start">
