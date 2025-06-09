@@ -61,7 +61,7 @@ export default function ToolsPage() {
                 <path d="M8 12h8"></path>
               </svg>
             }
-            href="/ugs"
+            href="/tools/ugs"
             color="blue"
           />
         </div>
